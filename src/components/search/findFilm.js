@@ -44,10 +44,11 @@ class FindFilm extends Component{
     render(){
         return(
             <div className = "find-film">
-                <textarea value={this.state.query}
-                          onChange={this.handleSearchFilm}
-                          placeholder="Введите название фильма"
-                          maxLength="80"
+                <textarea
+                    value={this.state.query}
+                    onChange={this.handleSearchFilm}
+                    placeholder="Введите название фильма"
+                    maxLength="80"
                 />
                 <div className="controls">
                     <input type="number" placeholder="год"
@@ -55,7 +56,12 @@ class FindFilm extends Component{
                            value={this.state.filter}
                            max="4"
                            />
-                    <button disabled={!this.state.query.length} onClick={this.handleSubmit}>Найти</button>
+                    <button
+                        disabled={!this.state.query.length}
+                        onClick={this.handleSubmit}
+                    >
+                        Найти
+                    </button>
                 </div>
             </div>
         )

@@ -8,14 +8,14 @@ class createListFilm extends Component{
         super(props);
     }
     componentWillUnmount(){
-        console.log("Компонент размонтирован");
+        console.log("Компонент <createListFilm /> размонтирован");
         this.props.clear();
     }
     render(){
         return (
             <Modal
                 size="lg"
-                show={this.props.show}
+                show={true}
                 onHide={() => this.props.onHide()}
                 aria-labelledby="example-modal-sizes-title-lg"
             >

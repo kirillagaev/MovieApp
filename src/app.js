@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Nav from './components/navbar/navbar'
 import FindFilm from "./components/search/findFilm";
 import LF from "./components/resultList/resultList";
-import fetchMovie from './http/fetch';
+import * as API from './http/fetch';
 
 
 class App extends Component{
@@ -25,14 +25,14 @@ class App extends Component{
     };
 
     findFilm(query, filter) {
-        fetchMovie(query, filter).then(res => {
+        API.fetchMovie(query, filter).then(res => {
             return res.json().then(res =>
                 this.setState(()=>({
                 list: res.results,
                 show: true,
                 query
                 })))
-        }).catch(()=> console.log("Говно случается!"));
+        }).catch(()=> console.log("Ошибочка вышла!"));
     }
     setShow(val){
         this.setState(()=>({
@@ -52,6 +52,7 @@ class App extends Component{
                 <Nav />
                 <div className="home">
                     <FindFilm onSubmit={this.findFilm}/>
+                    {/*TODO: Уйти от создания функция в рендере */}
                     {this.state.show ? <LF show={this.state.show} value={this.state.query} list={this.state.list} onHide={()=> this.setShow(false)} clear={()=>this.clearState()}/>:null}
                 </div>
               </div>

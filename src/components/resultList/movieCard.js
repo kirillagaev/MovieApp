@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Card } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 class MovieCard extends Component{
     constructor(props){
@@ -21,7 +22,9 @@ class MovieCard extends Component{
                     <Card.Text>
                         {this.state.movie.overview}
                     </Card.Text>
-                    {/*<Button variant="primary">Go somewhere</Button>*/}
+                    <Link to={`/movie/${this.state.movie.id}`}>
+                        <button className="more_details">Подробнее</button>
+                    </Link>
                 </Card.Body>
             </Card>
         )
