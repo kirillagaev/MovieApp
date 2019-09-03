@@ -13,7 +13,6 @@ class MoreDetails extends Component{
     }
 
     componentDidMount(){
-        console.log('После монтирования компонента <More_details />');
         API.fetchMovieDetails(this.props.match.params.id).then(res=>{
             return res.json().then(res=>
                 this.setState(()=>({
@@ -25,6 +24,7 @@ class MoreDetails extends Component{
     }
 
     render(){
+        const {poster_path, title, release_date, overview, original_title, budget, status, revenue, runtime} = this.state.details;
         return(
             <div className="app">
                 <Nav />
@@ -35,14 +35,14 @@ class MoreDetails extends Component{
                                 width={300}
                                 height={450}
                                 className="poster"
-                                src={"https://image.tmdb.org/t/p/w370_and_h556_bestv2/" + `${this.state.details.poster_path}`}
+                                src={"https://image.tmdb.org/t/p/w370_and_h556_bestv2/" + `${poster_path}`}
                                 alt="Generic placeholder"
                             />
                             <Media.Body>
                                 <div className="title">
                                 <span>
-                                    <h2 className="movieTitle">{this.state.details.title}</h2>
-                                    <span> ({this.state.details.release_date})
+                                    <h2 className="movieTitle">{title}</h2>
+                                    <span> ({release_date})
                                     </span>
                                 </span>
                                 </div>
@@ -50,7 +50,7 @@ class MoreDetails extends Component{
                                     <h3>Обзор</h3>
                                     <div className="overview">
                                         <p>
-                                            {this.state.details.overview}
+                                            {overview}
                                         </p>
                                     </div>
                                 </div>
@@ -59,12 +59,12 @@ class MoreDetails extends Component{
                                     <Container>
                                         <Row>
                                             <Col><p><strong>Исходное название:</strong>
-                                            </p> {this.state.details.original_title}</Col>
-                                            <Col><p><strong>Бюджет:</strong></p> ${this.state.details.budget}</Col>
-                                            <Col><p><strong>Статус:</strong></p> {this.state.details.status}</Col>
-                                            <Col><p><strong>Доход:</strong></p> ${this.state.details.revenue}</Col>
+                                            </p> {original_title}</Col>
+                                            <Col><p><strong>Бюджет:</strong></p> ${budget}</Col>
+                                            <Col><p><strong>Статус:</strong></p> {status}</Col>
+                                            <Col><p><strong>Доход:</strong></p> ${revenue}</Col>
                                             <Col><p><strong>Продолжительность:</strong>
-                                            </p> {this.state.details.runtime} мин.</Col>
+                                            </p> {runtime} мин.</Col>
                                         </Row>
                                     </Container>
                                 </div>

@@ -8,7 +8,6 @@ class createListFilm extends Component{
         super(props);
     }
     componentWillUnmount(){
-        console.log("Компонент <createListFilm /> размонтирован");
         this.props.clear();
     }
     render(){
