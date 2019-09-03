@@ -15,8 +15,8 @@ class createListFilm extends Component{
         return (
             <Modal
                 size="lg"
-                show={true}
-                onHide={() => this.props.onHide()}
+                show
+                onHide={this.props.onHide}
                 aria-labelledby="example-modal-sizes-title-lg"
             >
                 <Modal.Header closeButton>

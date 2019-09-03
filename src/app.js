@@ -34,9 +34,9 @@ class App extends Component{
                 })))
         }).catch(()=> console.log("Ошибочка вышла!"));
     }
-    setShow(val){
+    setShow(){
         this.setState(()=>({
-            show: val
+            show: false
         }))
     }
     clearState(){
@@ -53,7 +53,7 @@ class App extends Component{
                 <div className="home">
                     <FindFilm onSubmit={this.findFilm}/>
                     {/*TODO: Уйти от создания функция в рендере */}
-                    {this.state.show ? <LF show={this.state.show} value={this.state.query} list={this.state.list} onHide={()=> this.setShow(false)} clear={()=>this.clearState()}/>:null}
+                    {this.state.show ? <LF show={this.state.show} value={this.state.query} list={this.state.list} onHide={this.setShow} clear={this.clearState}/>:null}
                 </div>
               </div>
         )
