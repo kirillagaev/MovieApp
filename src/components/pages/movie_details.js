@@ -1,34 +1,27 @@
 import React, { Component } from 'react';
-import * as API from '../../http/fetch';
 import Nav from "../navbar/navbar";
 import { Media, Container, Row, Col, Spinner} from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import { movieDetails, isLoading } from "../../actions/actions";
 
 class MoreDetails extends Component{
-    constructor(props){
-        super(props);
-        this.state = {
-            isLoading: true,
-            details: {}
-        }
-    }
 
     componentDidMount(){
-        API.fetchMovieDetails(this.props.match.params.id).then(res=>{
-            return res.json().then(res=>
-                this.setState(()=>({
-                    details: res,
-                    isLoading: false
-                }))
-            )
-        }).catch(()=>console.log("Ошибочка вышла!"))
+        this.props.actions.movieDetails(this.props.match.params.id);
+    }
+
+    componentWillUnmount(){
+        this.props.actions.isLoading();
     }
 
     render(){
-        const {poster_path, title, release_date, overview, original_title, budget, status, revenue, runtime} = this.state.details;
+        const {poster_path, title, release_date, overview, original_title, budget, status, revenue, runtime} = this.props.details;
         return(
             <div className="app">
                 <Nav />
-                {this.state.isLoading ? <Spinner animation="border" variant="primary"/> :
+                {this.props.isLoading ? <Spinner animation="border" variant="primary"/> :
                     <div className="page_movie">
                         <Media>
                             <img
@@ -77,4 +70,20 @@ class MoreDetails extends Component{
     }
 }
 
-export default MoreDetails;
+export const mapStateToProps = state => {
+    return {
+        details: state.details,
+        isLoading: state.isLoading
+    }
+};
+
+export const mapDispatchToProps = dispatch => {
+    return {
+        actions: bindActionCreators({
+            movieDetails,
+            isLoading
+        }, dispatch)
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MoreDetails);

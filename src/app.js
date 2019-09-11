@@ -1,63 +1,52 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import Nav from './components/navbar/navbar'
 import FindFilm from "./components/search/findFilm";
 import LF from "./components/resultList/resultList";
-import * as API from './http/fetch';
+import { enterMovieTitle, enterMovieYear, clearState, findFilm } from './actions/actions';
 
 
-class App extends Component{
-    constructor(props) {
-        super(props);
-        this.state = {
-            list: [],
-            show: false,
-            query: ''
-        };
-        this.findFilm = this.findFilm.bind(this);
-        this.setShow = this.setShow.bind(this);
-        this.clearState = this.clearState.bind(this);
-    }
-
-    static propTypes = {
-        children: PropTypes.node
-    };
-
-    findFilm(query, filter) {
-        API.fetchMovie(query, filter).then(res => {
-            return res.json().then(res =>
-                this.setState(()=>({
-                list: res.results,
-                show: true,
-                query
-                })))
-        }).catch(()=> console.log("Ошибочка вышла!"));
-    }
-    setShow(){
-        this.setState(()=>({
-            show: false
-        }))
-    }
-    clearState(){
-        this.setState(()=>({
-            list: [],
-            query: ''
-        }))
-    }
-
-    render() {
-        return (
+function App(props){
+    const {show, query, filter, list, actions} = props;
+    return (
             <div className="app">
                 <Nav />
                 <div className="home">
-                    <FindFilm onSubmit={this.findFilm}/>
-                    {/*TODO: Уйти от создания функция в рендере */}
-                    {this.state.show ? <LF show={this.state.show} value={this.state.query} list={this.state.list} onHide={this.setShow} clear={this.clearState}/>:null}
+                    <FindFilm onSubmit={actions.findFilm} onChangeTitle={actions.enterMovieTitle} onChangeYear={actions.enterMovieYear} query={query} filter={filter}/>
+                    {show ? <LF show={show}
+                                value={query}
+                                list={list}
+                                onHide={actions.clearState}
+                    /> :null}
                 </div>
               </div>
-        )
-    }
+    )
 }
 
-export default App;
+App.propTypes = {
+    children: PropTypes.node
+};
+
+export const mapStateToProps = state => {
+    return {
+        list: state.list,
+        show: state.show,
+        query: state.query,
+        filter: state.filter
+    }
+};
+
+export const mapDispatchToProps = dispatch => {
+    return {
+        actions: bindActionCreators({
+            enterMovieTitle,
+            enterMovieYear,
+            clearState,
+            findFilm}, dispatch)
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
